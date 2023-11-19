@@ -1,13 +1,14 @@
-# Finance Data Project
+# Stocks Data Visualizations
+ 
 
 We need to get data using pandas datareader. The first step is to grab the stock info for the following banks:
 
--     Bank of America
--     CitiGroup
--     Goldman Sachs
--     JPMorgan Chase
--     Morgan Stanley
--     Wells Fargo
+-    Bank of America
+-    CitiGroup
+-  Goldman Sachs
+-   JPMorgan Chase
+-   Morgan Stanley
+-   Wells Fargo
 
 
 Our next goal is to grab the stock data from **Jan 1st 2006** to **Jan 1st 2016** for each of these banks. To do this, we can set each bank to be a seperate dataframe, with the variable name for that bank being its ticker symbol. To create a ticker symbol, we need to:
@@ -15,6 +16,39 @@ Our next goal is to grab the stock data from **Jan 1st 2006** to **Jan 1st 2016*
 1. Use datetime to set start and end datetime objects.
 2. Figure out the ticker symbol for each bank.
 3. Figure out how to use datareader to grab info on the stock.
+
+
+First, let's import all the necessasry libraries into our file:
+
+````python
+from pandas_datareader import data
+import datetime  
+import pandas as pd
+````
+
+We can now set datetime to set the start and end datatime objects, particularly from 2006 to 2016:
+
+````python
+start = datetime.datetime(2006, 1, 1)
+end = datetime.datetime(2016, 1, 1)
+````
+We can create a list of tickers representing each bank set a for loop that will iterate through each ticker and use datareader to pull each banks's stock data using the start and end datetime objects.
+
+````python
+# create the keys for the our new dataframe
+tickers = ['BAC', 'MS', 'C', 'WFC', 'GS' , 'JPM' ]
+
+# Reading in and storing each bank's stock data in a list
+listOfBanks = [
+        data.DataReader(item, 'stooq', start, end) for item in tickers
+        ] 
+````
+We can us the `concat` function to concatenate all the stock data into one dataframe.
+````python
+bank_stocks = pd.concat(listOfBanks , axis = 1 , keys = tickers)
+
+bank_stocks.columns.names = ['Bank Ticker', 'Stock Info']
+````
 
 
 What is the max Close price for each bank's stock throughout the time period?
@@ -207,7 +241,12 @@ which return the following plot:
 We can visualize the same data using a heatmap.
 
 ````python
-closePrice = df.xs(key = 'Close', axis = 1 , level = 'Stock Info')
+closePrice = df.xs(
+    key = 'Close', 
+    axis = 1 , 
+    level = 'Stock Info'
+    )
+
 sns.heatmap(data = closePrice.corr() , annot = True)
 plt.savefig('./plots/heatmapClosePrice.png')
 plt.show()
