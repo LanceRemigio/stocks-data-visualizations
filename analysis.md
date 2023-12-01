@@ -71,7 +71,7 @@ tickerList = ['BAC', 'C', 'GS', 'JPM', 'MS', 'WFC']
 returns = pd.DataFrame() # creates the 'returns' column
 
 for ticker in tickerList:
-   returns[ticker + " Return"] = df['ticker']['Close'].pct_change() # fills in the values of the dataframe using percent changes from the dataframe 'df'
+   returns[ticker + " Return"] = df[ticker]['Close'].pct_change() # fills in the values of the dataframe using percent changes from the dataframe 'df'
 
 print(returns) # returns the dataframe 'return'
 
@@ -86,7 +86,7 @@ plt.show()
 ![pairplot on returns column](./plots/pairplotreturnscolumn.png)
 
 
-The one the stands out the most would be the `C Return` because the data is more skewed compared to the other banks.
+The one the stands out the most would be the `C Return` because the data is more skewed compared to the other banks. Also, the returns correlation graphs are peculiar in that the data points for a cluster looking like a straignt line. This makes sense since the Citigroup Bank stocks crashed in 2008. 
 
 Using this `returns` DataFrame, figure out on what dates each stock had the best and worst single day returns. You should notice that 4 of the banks share the same day for the worst drop, did anything significant happen that day?
 
@@ -130,7 +130,13 @@ WFC Returns    0.030233
 dtype: float64
 ````
 
+
+
 - Standard Deviation of returns in 2015:
+
+
+
+
 
 Let's check out the head of the dataframe again.
 
